@@ -23,7 +23,7 @@ shelp_reposcripts:
   author: BloodEko
   name: doorbell
   usage: /doorbell syntax
-  version: 0.9
+  version: 1.0
   id: 132
   link: http://old.mcmonkey.org/denizen/repo/entry/132
 
@@ -52,7 +52,7 @@ doorbell_cmdhandler:
     - case set:
       - if <li@stone_button|wood_button.contains[<pl.location.cursor_on.material>]> && <server.has_flag[doorbell.<player.location.cursor_on.simple>]> { 
         - narrate "<&4>This button is already a doorbell!"
-        } else if !<server.has_flag[doorbell.<player.uuid>]> {
+        } else if !<server.has_flag[doorbell.<player>]> {
         - narrate "<&2>Created a new doorbell!"
         - flag server doorbell.<player.location.cursor_on.simple>:<player>
         - flag server doorbell.<player>:<player.location.cursor_on.simple>
