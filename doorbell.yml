@@ -108,9 +108,8 @@ doorbell_handler:
     - narrate "Seems like nobody is there."
     }
   doorbell_break:
-  - if <server.has_flag[doorbell.<context.location.simple>]> {
-    - define user <server.flag[doorbell.<context.location.simple>]>
-    - narrate "<&2>Disabled the doorbell from <&6><def[user].as_player.name>"
-    - flag server doorbell.<def[user]>:!
-    - flag server doorbell.<context.location.simple>:!
-    }
+  - if !<server.has_flag[doorbell.<context.location.simple>]> queue clear
+  - define user <server.flag[doorbell.<context.location.simple>]>
+  - narrate "<&2>Disabled the doorbell from <&6><def[user].as_player.name>"
+  - flag server doorbell.<def[user]>:!
+  - flag server doorbell.<context.location.simple>:!
