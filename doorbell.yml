@@ -23,7 +23,7 @@ shelp_reposcripts:
   author: BloodEko
   name: doorbell
   usage: /doorbell syntax
-  version: 0.8
+  version: 0.9
   id: 132
   link: http://old.mcmonkey.org/denizen/repo/entry/132
 
