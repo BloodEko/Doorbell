@@ -9,7 +9,8 @@ How to install:
 4. done!
 
 How to use:
-/doorbell help - shows you all commands
-/doorbell set - makes a button into a doorbell
-/doorbell disable - disables your doorbell
-/doorbell info - shows information about the doorbell you're looking at or your own
+Give your users the permission doorbell.use
+./doorbell help - shows you all commands
+./doorbell set - makes a button into a doorbell
+./doorbell disable - disables your doorbell
+./doorbell info - shows information about the doorbell you're looking at or your own
