@@ -32,23 +32,27 @@ shelp_reposcripts:
 doorbell_cmdhandler:
   type: command
   name: doorbell
-  usage: /doorbell  set|disable|info
-  description:
+  usage: /doorbell help|set|disable|info
+  description: Sets and disables doorbells.
   permission: doorbell.use
-  permission message: You don't have the permission for using this command.
+  permission message: You don't have permission to use this command.
   script:
-  #
-  # /doorbell
-  #
-  - if <context.args.size> == 1 {
-    #
-    # set
-    #
-    - if <context.args.get[1]> == set {
-      - if <li@stone_button|wood_button.contains[<pl.location.cursor_on.material>]> 
-        && <server.has_flag[doorbell.<player.location.cursor_on.simple>]> {
-        - narrate "<&4>There is already a doorbell!"
-        } else if !<server.has_flag[doorbell.<player>]> {
+  # 
+  # /doorbell 
+  # 
+  - if <context.args.size> != 1 {
+    - narrate "<&4>/doorbell help|set|disable|info"
+    }
+  - choose <context.args.get[1]>:
+    - case help:
+      - narrate "/doorbell help<&nl><&7>- Displays this help page."
+      - narrate "/doorbell set<&nl><&7>- Converts a placed button to a doorbell."
+      - narrate "/doorbell disable<&nl><&7>- Removes your doorbell."
+      - narrate "/doorbell info<&nl><&7>- Displays information about a placed doorbell or your own doorbell."
+    - case set:
+      - if <li@stone_button|wood_button.contains[<pl.location.cursor_on.material>]> && <server.has_flag[doorbell.<player.location.cursor_on.simple>]> { 
+        - narrate "<&4>This button is already a doorbell!"
+        } else if !<server.has_flag[doorbell.<player.uuid>]> {
         - narrate "<&2>Created a new doorbell!"
         - flag server doorbell.<player.location.cursor_on.simple>:<player>
         - flag server doorbell.<player>:<player.location.cursor_on.simple>
@@ -56,11 +60,7 @@ doorbell_cmdhandler:
         else {
         - narrate "<&4>You already have a doorbell!"
         }
-      }
-      #
-      # info
-      #
-      else if <context.args.get[1]> == info {
+    - case info:
       - if <server.has_flag[doorbell.<player.location.cursor_on.simple>]> {
         - narrate "<&2>This doorbell is owned by <&6><server.flag[doorbell.<player.location.cursor_on.simple>].as_player.name>"
         }
@@ -70,11 +70,7 @@ doorbell_cmdhandler:
         else {
         - narrate "<&2>You have no doorbell."
         }
-      }
-      #
-      # disable
-      #
-      else if <context.args.get[1]> == disable {
+    - case disable:
       - if <server.has_flag[doorbell.<player>]> {
         - narrate "<&2>Disabled your doorbell."
         - define location "<server.flag[doorbell.<player>]>"
@@ -84,16 +80,8 @@ doorbell_cmdhandler:
         else {
         - narrate "<&2>You have no doorbell."
         }
-      }
-      else {
-      - inject locally doorbell_false_syntax
-      }
-    }
-    else {
-    - inject locally doorbell_false_syntax
-    }
-  doorbell_false_syntax:
-  - narrate "<&4>/doorbell  set|disable|info"
+    - default:
+      - narrate "<&4>/doorbell help|set|disable|info"
 
 doorbell_handler:
   type: world
@@ -120,8 +108,9 @@ doorbell_handler:
     - narrate "Seems like nobody is there."
     }
   doorbell_break:
-  - if !<server.has_flag[doorbell.<context.location.simple>]> queue clear
-  - define user <server.flag[doorbell.<context.location.simple>]>
-  - narrate "<&2>Disabled the doorbell from <&6><def[user].as_player.name>"
-  - flag server doorbell.<def[user]>:!
-  - flag server doorbell.<context.location.simple>:!
+  - if <server.has_flag[doorbell.<context.location.simple>]> {
+    - define user <server.flag[doorbell.<context.location.simple>]>
+    - narrate "<&2>Disabled the doorbell from <&6><def[user].as_player.name>"
+    - flag server doorbell.<def[user]>:!
+    - flag server doorbell.<context.location.simple>:!
+    }
