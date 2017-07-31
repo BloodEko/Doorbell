@@ -148,7 +148,7 @@ doorbell_handler:
       - playsound <def[player]> sound:BLOCK_NOTE_PLING
       - narrate "<&6><&l>Somebody has used your doorbell!" targets:<def[player]>
       - bungee <def[back_to]> {
-        - narrate "He must have heared it for sure!" targets:<def[player]>
+        - narrate "He must have heared it for sure!" targets:<def[back_to_player]>
         }
       }
     }
