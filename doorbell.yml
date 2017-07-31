@@ -29,6 +29,14 @@ shelp_reposcripts:
 
 #--------------------------------------------+
 
+doorbell_bungee:
+  type: yaml data
+  # on or off
+  # requires a proper bungeecord setup
+  # how to setup: https://github.com/DenizenScript/Depenizen
+  #
+  bungee: off
+
 doorbell_cmdhandler:
   type: command
   name: doorbell
@@ -102,10 +110,10 @@ doorbell_handler:
     on player breaks stone_button:
     - inject locally doorbell_break
     on player right clicks wood_button:
-    - inject locally doorbell_event
+    - inject locally doorbell_event_<s@doorbell_bungee.yaml_key[bungee]||off>
     on player right clicks stone_button:
-    - inject locally doorbell_event
-  doorbell_event:
+    - inject locally doorbell_event_<s@doorbell_bungee.yaml_key[bungee]||off>
+  doorbell_event_off:
   - if !<server.has_flag[doorbell.<context.location>]> queue clear
   - if <server.has_flag[doorbell.cooldown.<context.location>]> queue clear
   - if <server.has_flag[doorbell.disabled.<context.location>]> {
@@ -121,6 +129,28 @@ doorbell_handler:
     }
     else {
     - narrate "Seems like nobody is there."
+    }
+  doorbell_event_on:
+  - if !<server.has_flag[doorbell.<context.location>]> queue clear
+  - if <server.has_flag[doorbell.cooldown.<context.location>]> queue clear
+  - if <server.has_flag[doorbell.disabled.<context.location>]> {
+    - narrate "Seems like this doorbell isn't activated at the moment."
+    - queue clear
+    }
+  - flag server doorbell.cooldown.<context.location> duration:d@4s
+  - narrate "Ring ring ..." targets:<player.location.find.entities[player].within[10]>
+  - playsound <context.location> sound:BLOCK_NOTE_PLING
+  - define player <server.flag[doorbell.<context.location>]>
+  - define back_to_player <player>
+  - define back_to <bungee.server>
+  - bungee <bungee.list_servers> {
+    - if <def[player].as_player.is_online> {
+      - playsound <def[player]> sound:BLOCK_NOTE_PLING
+      - narrate "<&6><&l>Somebody has used your doorbell!" targets:<server.flag[doorbell.<context.location>]>
+      - bungee <def[back_to]> {
+        - narrate "He must have heared it for sure!" targets:<def[player]>
+        }
+      }
     }
   doorbell_break:
   - if !<server.has_flag[doorbell.<context.location>]> queue clear
