@@ -31,12 +31,28 @@ shelp_reposcripts:
 
 doorbell_bungee:
   type: yaml data
-  # on or off
+  # true or false
   # requires a proper bungeecord setup
   # how to setup: https://github.com/DenizenScript/Depenizen
   #
-  bungee: off
+  bungee: true
 
+doorbell_trigger:
+  type: task
+  speed: 0t
+  script:
+  - define back_to server@lobby
+  - define player <p@BloodEko>
+  - bungee <bungee.list_servers> {
+    - if <def[player].as_player.is_online> {
+      - playsound <def[player]> sound:BLOCK_NOTE_PLING
+      - narrate "<&6><&l>Somebody has used your doorbell!" targets:<def[player]>
+      - bungee <def[back_to]> {
+        - debug APPROVAL "He got the message!"
+        }
+      }
+    }
+  
 doorbell_cmdhandler:
   type: command
   name: doorbell
@@ -113,7 +129,7 @@ doorbell_handler:
     - inject locally doorbell_event_<s@doorbell_bungee.yaml_key[bungee]||off>
     on player right clicks stone_button:
     - inject locally doorbell_event_<s@doorbell_bungee.yaml_key[bungee]||off>
-  doorbell_event_off:
+  doorbell_event_false:
   - if !<server.has_flag[doorbell.<context.location>]> queue clear
   - if <server.has_flag[doorbell.cooldown.<context.location>]> queue clear
   - if <server.has_flag[doorbell.disabled.<context.location>]> {
@@ -130,7 +146,7 @@ doorbell_handler:
     else {
     - narrate "Seems like nobody is there."
     }
-  doorbell_event_on:
+  doorbell_event_true:
   - if !<server.has_flag[doorbell.<context.location>]> queue clear
   - if <server.has_flag[doorbell.cooldown.<context.location>]> queue clear
   - if <server.has_flag[doorbell.disabled.<context.location>]> {
