@@ -12,5 +12,7 @@ How to use:
 1. Give your users the permission doorbell.use
 - /doorbell help - shows you all commands
 - /doorbell set - makes a button into a doorbell
-- /doorbell disable - disables your doorbell
+- /doorbell disable - removes your doorbell
 - /doorbell info - shows information about the doorbell you're looking at or your own
+- /doorbell off - disabels your doorbell for 12h
+- /doorbell on - activates your doorbell again
