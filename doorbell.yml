@@ -146,7 +146,7 @@ doorbell_handler:
   - bungee <bungee.list_servers> {
     - if <def[player].as_player.is_online> {
       - playsound <def[player]> sound:BLOCK_NOTE_PLING
-      - narrate "<&6><&l>Somebody has used your doorbell!" targets:<server.flag[doorbell.<context.location>]>
+      - narrate "<&6><&l>Somebody has used your doorbell!" targets:<def[player]>
       - bungee <def[back_to]> {
         - narrate "He must have heared it for sure!" targets:<def[player]>
         }
