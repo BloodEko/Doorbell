@@ -23,7 +23,7 @@ shelp_reposcripts:
   author: BloodEko
   name: doorbell
   usage: /doorbell syntax
-  version: 1.1
+  version: 1.2
   id: 132
   link: http://old.mcmonkey.org/denizen/repo/entry/132
 
@@ -36,22 +36,6 @@ doorbell_bungee:
   # how to setup: https://github.com/DenizenScript/Depenizen
   #
   bungee: true
-
-doorbell_trigger:
-  type: task
-  speed: 0t
-  script:
-  - define back_to server@lobby
-  - define player <p@BloodEko>
-  - bungee <bungee.list_servers> {
-    - if <def[player].as_player.is_online> {
-      - playsound <def[player]> sound:BLOCK_NOTE_PLING
-      - narrate "<&6><&l>Somebody has used your doorbell!" targets:<def[player]>
-      - bungee <def[back_to]> {
-        - debug APPROVAL "He got the message!"
-        }
-      }
-    }
   
 doorbell_cmdhandler:
   type: command
