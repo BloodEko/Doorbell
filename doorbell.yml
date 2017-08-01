@@ -35,7 +35,7 @@ doorbell_bungee:
   # requires a proper bungeecord setup
   # how to setup: https://github.com/DenizenScript/Depenizen
   #
-  bungee: true
+  bungee: false
   
 doorbell_cmdhandler:
   type: command
